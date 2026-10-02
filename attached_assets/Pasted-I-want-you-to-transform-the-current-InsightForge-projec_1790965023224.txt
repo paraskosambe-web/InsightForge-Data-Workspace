@@ -1,0 +1,831 @@
+I want you to transform the current InsightForge project from a UI/mock-data prototype into a fully functional, production-ready Data Science and AI platform.
+
+IMPORTANT: Do NOT redesign the existing UI from scratch. The current InsightForge interface is already visually strong and should be preserved. Your job is to connect the existing frontend to real backend functionality and replace mock/static data with real data and real processing.
+
+## 1. Core Objective
+
+InsightForge is an AI-Powered Data Science & Decision Intelligence Platform.
+
+The platform should allow a user to:
+
+1. Upload datasets.
+2. Inspect and profile datasets automatically.
+3. Detect data-quality problems.
+4. Clean and preprocess datasets.
+5. Perform exploratory data analysis.
+6. Generate statistics and visualizations.
+7. Train machine-learning models.
+8. Compare multiple models.
+9. Evaluate models using appropriate metrics.
+10. Explain model predictions.
+11. Save experiments.
+12. Generate reports.
+13. Ask questions to an AI Data Analyst.
+14. Have the AI Analyst answer questions using the actual uploaded dataset and actual InsightForge tools.
+15. Download useful outputs/reports.
+
+The application must use REAL computation and REAL backend APIs. Do not use fake/mock results for core functionality.
+
+---
+
+# 2. Existing Frontend
+
+Preserve the existing InsightForge frontend design, layout, navigation, cards, dashboard structure, animations, dark professional theme, responsive design, and overall visual identity.
+
+Existing major sections include:
+
+* Overview
+* Datasets
+* Data Profiling
+* Exploratory Analysis
+* Statistics
+* ML Lab
+* Model Explainability
+* Experiments
+* AI Data Analyst
+* Reports
+* Settings
+* Help & Support
+
+Do not unnecessarily redesign these pages.
+
+Instead, connect each page to the appropriate backend functionality.
+
+All pages must work properly on:
+
+* Desktop
+* Laptop
+* Tablet
+* Mobile
+
+No horizontal overflow or broken layouts.
+
+---
+
+# 3. Frontend ↔ Backend
+
+Create a clean API architecture.
+
+The React frontend must communicate with the backend through proper API endpoints.
+
+Do not rely on localhost URLs hardcoded throughout the frontend.
+
+Use environment variables for API configuration, for example:
+
+VITE_API_BASE_URL
+
+The frontend must work correctly in both:
+
+* Local development
+* Production deployment
+
+Handle:
+
+* loading states
+* errors
+* empty states
+* successful responses
+* API failures
+* upload progress where appropriate
+
+Do not leave buttons that appear functional but do nothing.
+
+Every important action in the UI should perform a real operation.
+
+---
+
+# 4. Backend
+
+Use the existing Node.js/Express backend where appropriate.
+
+Create clean REST API endpoints for:
+
+### Dataset
+
+POST /api/datasets/upload
+
+GET /api/datasets
+
+GET /api/datasets/:id
+
+DELETE /api/datasets/:id
+
+### Profiling
+
+GET /api/datasets/:id/profile
+
+GET /api/datasets/:id/quality
+
+### EDA
+
+GET /api/datasets/:id/eda
+
+POST /api/datasets/:id/visualization
+
+### Statistics
+
+GET /api/datasets/:id/statistics
+
+POST /api/datasets/:id/hypothesis-test
+
+POST /api/datasets/:id/correlation
+
+### Machine Learning
+
+POST /api/ml/train
+
+POST /api/ml/compare
+
+GET /api/ml/models/:id
+
+POST /api/ml/predict
+
+### Explainability
+
+POST /api/explainability/shap
+
+POST /api/explainability/feature-importance
+
+POST /api/explainability/prediction
+
+### Experiments
+
+POST /api/experiments
+
+GET /api/experiments
+
+GET /api/experiments/:id
+
+DELETE /api/experiments/:id
+
+### Reports
+
+POST /api/reports/generate
+
+GET /api/reports
+
+GET /api/reports/:id
+
+### AI Analyst
+
+POST /api/ai-analyst/chat
+
+The exact endpoint structure may be adjusted if the existing architecture already has a better equivalent, but the functionality must exist.
+
+---
+
+# 5. Python Data Science Service
+
+Use a dedicated Python service for data science and machine-learning operations.
+
+Preferred stack:
+
+* Python
+* FastAPI
+* Pandas
+* NumPy
+* SciPy
+* scikit-learn
+* XGBoost
+* SHAP
+* Matplotlib/Plotly where appropriate
+
+The Node/Express backend can act as the application/API layer and communicate with the Python service for computational tasks.
+
+Do not perform serious ML/data-science computation inside the Node.js server if Python is more appropriate.
+
+---
+
+# 6. Dataset Upload
+
+Support:
+
+* CSV
+* XLSX
+* JSON
+
+After upload, store the dataset safely and create a dataset record.
+
+The user should immediately see:
+
+* Dataset name
+* File type
+* Number of rows
+* Number of columns
+* Memory usage if available
+* Numerical columns
+* Categorical columns
+* Date/time columns
+* Missing values
+* Duplicate rows
+* Target-column candidates
+* Data-quality score
+
+The uploaded dataset must be available to all downstream modules.
+
+---
+
+# 7. Automatic Data Profiling
+
+When a dataset is uploaded, automatically generate a profile.
+
+For every column calculate relevant information such as:
+
+* Data type
+* Missing count
+* Missing percentage
+* Unique values
+* Cardinality
+* Mean
+* Median
+* Standard deviation
+* Minimum
+* Maximum
+* Quartiles
+* Outliers where appropriate
+* Frequency distribution for categorical columns
+
+Automatically identify potential issues:
+
+* Missing values
+* Duplicate rows
+* Constant columns
+* High-cardinality categorical columns
+* Possible ID columns
+* Highly skewed numerical columns
+* Potential outliers
+* Inconsistent data types
+* Suspicious values
+
+Generate an overall data-quality score based on actual detected issues.
+
+---
+
+# 8. Data Cleaning
+
+Add a real data-cleaning workflow.
+
+Support operations such as:
+
+* Remove duplicates
+* Handle missing values
+* Drop columns
+* Rename columns
+* Convert data types
+* Encode categorical variables
+* Scale numerical variables
+* Detect/remove outliers where appropriate
+
+Do not silently modify the original dataset.
+
+Maintain the original dataset and create a processed version.
+
+Show the user what changed.
+
+---
+
+# 9. Exploratory Data Analysis
+
+EDA must use the actual uploaded dataset.
+
+Automatically generate useful visualizations such as:
+
+* Histograms
+* Box plots
+* Bar charts
+* Scatter plots
+* Correlation heatmap
+* Missing-value visualization
+* Distribution plots
+* Time-series plots when applicable
+
+Allow the user to select:
+
+* X column
+* Y column
+* Chart type
+* Aggregation
+
+Charts must be generated from real data.
+
+---
+
+# 10. Statistical Analysis
+
+Implement real statistical analysis.
+
+Include where applicable:
+
+* Descriptive statistics
+* Correlation analysis
+* Pearson correlation
+* Spearman correlation
+* Hypothesis testing
+* t-test
+* chi-square test
+* ANOVA where appropriate
+
+Return:
+
+* Test statistic
+* p-value
+* Sample size
+* Confidence interval where appropriate
+* Interpretation
+
+The system should validate whether a statistical method is appropriate for the selected data.
+
+---
+
+# 11. Machine Learning Lab
+
+This is one of the most important parts of InsightForge.
+
+The user must be able to train REAL machine-learning models on uploaded datasets.
+
+Support:
+
+### Classification
+
+Models such as:
+
+* Logistic Regression
+* Decision Tree
+* Random Forest
+* Gradient Boosting
+* XGBoost where available
+* K-Nearest Neighbors
+* Support Vector Machine
+
+Metrics:
+
+* Accuracy
+* Precision
+* Recall
+* F1-score
+* ROC-AUC
+* Confusion matrix
+
+### Regression
+
+Models such as:
+
+* Linear Regression
+* Ridge
+* Lasso
+* Decision Tree Regressor
+* Random Forest Regressor
+* Gradient Boosting Regressor
+* XGBoost Regressor where available
+
+Metrics:
+
+* MAE
+* MSE
+* RMSE
+* R²
+
+### Clustering
+
+Support:
+
+* K-Means
+* Hierarchical clustering where practical
+* DBSCAN where practical
+
+Metrics/analysis:
+
+* Silhouette score
+* Cluster sizes
+* Cluster visualization
+
+---
+
+# 12. Automated ML Workflow
+
+When the user selects a target column, InsightForge should:
+
+1. Determine whether the task is likely classification or regression.
+2. Separate features and target.
+3. Detect numerical and categorical features.
+4. Handle missing values.
+5. Encode categorical features.
+6. Scale features when appropriate.
+7. Split data into train/test sets.
+8. Train selected models.
+9. Evaluate them.
+10. Compare results.
+11. Store experiment information.
+
+The user should also be able to manually configure the workflow.
+
+Do not automatically select a "best model" using arbitrary assumptions. Present the measured evaluation metrics and let the user inspect the results.
+
+---
+
+# 13. Model Training Interface
+
+The ML Lab UI should allow the user to choose:
+
+* Dataset
+* Target column
+* Problem type
+* Features
+* Test size
+* Random seed
+* Model
+* Hyperparameters where practical
+
+Then provide:
+
+* Training status
+* Training time
+* Metrics
+* Confusion matrix for classification
+* Actual vs predicted visualization for regression
+* Feature importance
+* Model information
+
+Training must actually happen in the Python service.
+
+---
+
+# 14. Model Comparison
+
+Allow the user to train multiple models and compare them.
+
+Display a comparison table containing the actual calculated metrics.
+
+Allow the user to inspect each model individually.
+
+Store:
+
+* Dataset
+* Target
+* Features
+* Model
+* Hyperparameters
+* Metrics
+* Training timestamp
+* Model identifier
+
+---
+
+# 15. Explainability
+
+Implement real model explainability.
+
+Use:
+
+* SHAP where supported
+* Feature importance
+* Permutation importance where useful
+
+Provide:
+
+* Global feature importance
+* Local prediction explanation
+* Feature contribution
+* Explanation for individual predictions
+
+The UI should clearly distinguish between:
+
+"Model prediction"
+
+and
+
+"Explanation of why the model produced that prediction."
+
+---
+
+# 16. Experiment Tracking
+
+Every ML training run should be capable of becoming an experiment.
+
+Store:
+
+* Experiment name
+* Dataset
+* Target
+* Model
+* Features
+* Parameters
+* Metrics
+* Training duration
+* Timestamp
+* Model reference
+
+The Experiments page should show actual stored experiments rather than static mock records.
+
+---
+
+# 17. AI Data Analyst
+
+This should NOT be a generic chatbot.
+
+It must be connected to the actual InsightForge data-analysis tools.
+
+The AI Analyst should be capable of receiving questions such as:
+
+"How many missing values are in this dataset?"
+
+"Which columns have the most missing data?"
+
+"What is the correlation between income and age?"
+
+"Show me the distribution of this variable."
+
+"Which features are most important in my trained model?"
+
+"Train a random forest model using this target."
+
+"Compare the models I trained."
+
+"What does this prediction mean?"
+
+The AI should call real backend tools/functions to obtain the answer.
+
+Implement a tool-based architecture similar to:
+
+* profile_dataset()
+* get_column_statistics()
+* get_missing_values()
+* calculate_correlation()
+* run_hypothesis_test()
+* generate_visualization()
+* train_model()
+* compare_models()
+* get_experiment()
+* explain_prediction()
+
+The AI must NOT invent dataset statistics.
+
+If the required information has not been calculated, it should call the appropriate tool.
+
+---
+
+# 18. AI Safety / Accuracy
+
+The AI Analyst should never fabricate:
+
+* Dataset values
+* Statistics
+* Model metrics
+* Predictions
+* Experiment results
+
+If information is unavailable, explicitly state that it cannot be determined from the current dataset/model.
+
+For every analytical response, show the relevant data/tool result where practical.
+
+---
+
+# 19. Reports
+
+Generate real reports containing:
+
+* Dataset overview
+* Data-quality analysis
+* Important statistics
+* EDA findings
+* Visualizations
+* ML results
+* Model comparison
+* Explainability results
+* Key observations
+
+Allow users to view and download reports.
+
+---
+
+# 20. Database
+
+Use a proper database for application metadata.
+
+Store entities such as:
+
+* datasets
+* dataset profiles
+* experiments
+* models
+* reports
+* users if authentication is implemented
+* analysis jobs
+
+Do not store huge raw datasets directly in the database unless there is a clear reason.
+
+Use filesystem/object storage for uploaded files where appropriate and store references/metadata in the database.
+
+---
+
+# 21. Error Handling
+
+Every API endpoint must have proper error handling.
+
+Frontend should display useful messages instead of crashing.
+
+Handle:
+
+* Invalid file
+* Unsupported format
+* Empty dataset
+* Dataset too large
+* Missing target
+* Invalid target type
+* Insufficient data
+* ML training failure
+* Python service unavailable
+* Database failure
+* AI service failure
+
+---
+
+# 22. Loading / Progress States
+
+Long-running operations such as:
+
+* Dataset profiling
+* EDA generation
+* Model training
+* Model comparison
+* SHAP analysis
+* Report generation
+
+must show proper loading/progress states.
+
+The UI must never appear frozen.
+
+---
+
+# 23. Remove Mock Data
+
+Audit the entire frontend.
+
+Identify all:
+
+* fake statistics
+* mock datasets
+* placeholder charts
+* fake ML metrics
+* fake experiments
+* fake reports
+* hardcoded dashboard values
+
+Replace them with real API-driven data wherever the corresponding functionality has been implemented.
+
+Do not remove UI components simply because backend functionality is not yet implemented. Implement the functionality.
+
+---
+
+# 24. Existing API Client
+
+There is already an API client workspace package:
+
+@workspace/api-client-react
+
+and an existing generated health endpoint:
+
+GET /api/healthz
+
+Keep the existing API-client architecture where practical.
+
+Update/regenerate the API client when new OpenAPI endpoints are added rather than creating random direct fetch implementations throughout the frontend.
+
+Make sure the frontend API base URL works correctly in development and production.
+
+---
+
+# 25. Health Check
+
+Keep:
+
+GET /api/healthz
+
+and make the frontend capable of detecting whether the backend is online.
+
+The health check must return actual JSON such as:
+
+{
+"status": "ok"
+}
+
+Do not return the frontend HTML page for API requests.
+
+---
+
+# 26. Security
+
+Implement sensible security practices:
+
+* Validate uploaded files
+* Limit upload size
+* Validate API input
+* Sanitize user-provided values
+* Avoid arbitrary code execution
+* Do not expose server secrets
+* Store API keys only in environment variables
+* Never expose database credentials to the frontend
+
+---
+
+# 27. Environment Variables
+
+Create clear environment examples.
+
+For example:
+
+Frontend:
+
+VITE_API_BASE_URL
+
+Backend:
+
+PORT
+DATABASE_URL
+PYTHON_SERVICE_URL
+AI_API_KEY
+
+Use `.env.example`.
+
+Never commit actual API keys or passwords.
+
+---
+
+# 28. Testing
+
+After implementation, test the complete flow:
+
+1. Start backend.
+2. Start Python service.
+3. Start frontend.
+4. Upload a CSV.
+5. Verify dataset appears.
+6. Verify profiling works.
+7. Verify EDA works.
+8. Verify statistics work.
+9. Train a classification model.
+10. Train a regression model using a suitable dataset.
+11. Compare models.
+12. Generate feature importance/SHAP explanation.
+13. Save an experiment.
+14. Ask the AI Analyst a dataset question.
+15. Generate a report.
+16. Verify error handling.
+17. Verify mobile responsiveness.
+
+Fix all runtime errors and TypeScript errors.
+
+Run:
+
+* TypeScript checks
+* Production build
+* Backend build
+* Python syntax/import checks
+
+The application should not be considered complete until the implemented features work end-to-end.
+
+---
+
+# 29. Important Development Rule
+
+Do not simply create placeholder endpoints that return fake data.
+
+If a feature is presented as functional in the UI, it must perform the real operation.
+
+If a complex feature requires architectural changes, implement the necessary architecture rather than hiding the feature.
+
+Prioritize correctness and working end-to-end functionality over adding unnecessary visual features.
+
+---
+
+# 30. Final Expected Product
+
+The final InsightForge application should feel like a real Data Science workspace rather than a dashboard mockup.
+
+The user workflow should be:
+
+UPLOAD DATASET
+↓
+AUTOMATIC PROFILING
+↓
+DATA QUALITY / CLEANING
+↓
+EDA + STATISTICS
+↓
+MACHINE LEARNING
+↓
+MODEL COMPARISON
+↓
+EXPLAINABILITY
+↓
+EXPERIMENT TRACKING
+↓
+AI DATA ANALYST
+↓
+REPORT GENERATION
+
+All major stages must use the same uploaded dataset and maintain consistent state.
+
+The application must be responsive, stable, visually polished, and fully connected from frontend to backend to Python data-science services.
+
+Before finishing, audit the entire project and fix integration problems rather than only making individual pages appear functional.
