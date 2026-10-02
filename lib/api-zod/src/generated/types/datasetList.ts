@@ -5,7 +5,8 @@
  * InsightForge application API
  * OpenAPI spec version: 0.2.0
  */
+import type { Dataset } from './dataset';
 
-export interface HealthStatus {
-  status: string;
+export interface DatasetList {
+  datasets: Dataset[];
 }

@@ -5,7 +5,8 @@
  * InsightForge application API
  * OpenAPI spec version: 0.2.0
  */
+import type { Report } from './report';
 
-export interface HealthStatus {
-  status: string;
+export interface ReportList {
+  reports: Report[];
 }

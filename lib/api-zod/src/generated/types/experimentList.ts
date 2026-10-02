@@ -5,7 +5,8 @@
  * InsightForge application API
  * OpenAPI spec version: 0.2.0
  */
+import type { Experiment } from './experiment';
 
-export interface HealthStatus {
-  status: string;
+export interface ExperimentList {
+  experiments: Experiment[];
 }
