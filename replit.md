@@ -1,6 +1,6 @@
-# [Project name]
+# InsightForge
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+An AI-powered data science workspace UI for exploring datasets, reviewing sample model results, and presenting decision-ready demo insights.
 
 ## Run & Operate
 
@@ -30,7 +30,7 @@ _Populate as you build — non-obvious choices a reader couldn't infer from the 
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+InsightForge is a frontend-only demonstration of a data science workflow: dataset upload and preview, profiling, exploratory analysis, statistics, model comparison, explainability, experiment tracking, AI analyst conversations, and reports. Use clearly labeled sample data and canned responses. Do not imply uploaded files are analyzed; real database, statistical, ML, and AI functionality is out of scope unless explicitly requested.
 
 ## User preferences
 
