@@ -101,7 +101,12 @@ router.post("/datasets/complete", async (req: Request, res: Response) => {
       ),
     )
     .limit(1);
-  if (!ticket || ticket.name !== name || ticket.size !== size) {
+  if (
+    !ticket ||
+    ticket.name !== name ||
+    ticket.size !== size ||
+    ticket.contentType !== parsed.data.contentType
+  ) {
     res.status(403).json({ error: "This upload does not belong to your account or has expired." });
     return;
   }
@@ -112,6 +117,12 @@ router.post("/datasets/complete", async (req: Request, res: Response) => {
     const [metadata] = await uploadedFile.getMetadata();
     const actualSize = Number(metadata.size ?? 0);
     if (actualSize !== ticket.size || actualSize > MAX_FILE_SIZE) {
+      await uploadedFile.delete({ ignoreNotFound: true }).catch(() => undefined);
+      await db
+        .update(uploadTicketsTable)
+        .set({ consumedAt: new Date() })
+        .where(eq(uploadTicketsTable.id, ticket.id))
+        .catch(() => undefined);
       res.status(400).json({ error: "Uploaded file size does not match its upload request." });
       return;
     }
@@ -358,7 +369,7 @@ router.post("/datasets/:datasetId/clean", async (req: Request, res: Response) =>
     const [created] = await db
       .insert(datasetsTable)
       .values({
-        userId: req.user.id,
+        userId,
         name: cleanedName,
         fileType: "csv",
         objectPath,

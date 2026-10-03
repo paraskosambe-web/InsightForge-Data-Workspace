@@ -1,7 +1,7 @@
 kind = "web"
 previewPath = "/"
 title = "InsightForge"
-description = "A frontend-only AI-powered data science workspace for exploring datasets, reviewing demo analytics and model results, and generating sample insights."
+description = "A private, full-stack data science workspace for profiling datasets, training models, exploring insights, and saving reports."
 version = "1.0.0"
 id = "artifacts/insightforge"
 router = "path"
@@ -15,8 +15,15 @@ localPort = 25306
 run = "pnpm --filter @workspace/insightforge run dev"
 
 [services.production]
-build = [ "pnpm", "--filter", "@workspace/insightforge", "run", "build" ]
 serve = "static"
+
+[services.production.build]
+args = ["pnpm", "--filter", "@workspace/insightforge", "run", "build"]
+
+[services.production.build.env]
+NODE_ENV = "production"
+PORT = "25306"
+BASE_PATH = "/"
 publicDir = "artifacts/insightforge/dist/public"
 
 [[services.production.rewrites]]

@@ -30,3 +30,24 @@ NODE_ENV = "production"
 
 [services.production.health.startup]
 path = "/api/healthz"
+[[services]]
+name = "Python Compute"
+paths = ["/compute"]
+localPort = 8008
+
+[services.development]
+run = "if [ -f pyproject.toml ]; then ROOT=.; APP_DIR=artifacts/api-server/python; else ROOT=../..; APP_DIR=python; fi; uv run --frozen --no-dev --project \"$ROOT\" python -m uvicorn insightforge_service.main:app --app-dir \"$APP_DIR\" --host 0.0.0.0 --port \"${PORT:-8008}\""
+
+[services.production]
+
+[services.production.build]
+args = ["bash", "-lc", "if [ -f pyproject.toml ]; then uv sync --frozen --no-dev --no-install-project --project .; else uv sync --frozen --no-dev --no-install-project --project ../..; fi"]
+
+[services.production.run]
+args = ["bash", "-lc", "if [ -f pyproject.toml ]; then ROOT=.; APP_DIR=artifacts/api-server/python; else ROOT=../..; APP_DIR=python; fi; uv run --no-sync --project \"$ROOT\" python -m uvicorn insightforge_service.main:app --app-dir \"$APP_DIR\" --host 0.0.0.0 --port \"${PORT:-8008}\""]
+
+[services.production.run.env]
+PORT = "8008"
+
+[services.production.health.startup]
+path = "/healthz"

@@ -11,8 +11,8 @@ interface AuthState {
   logout: () => void;
 }
 
-function getBasePath() {
-  return import.meta.env.BASE_URL.replace(/\/+$/, '') || '/';
+function getReturnPath() {
+  return `${window.location.pathname}${window.location.search}${window.location.hash}`;
 }
 
 export function useAuth(): AuthState {
@@ -22,7 +22,7 @@ export function useAuth(): AuthState {
   useEffect(() => {
     let cancelled = false;
 
-    fetch('/api/auth/user', { credentials: 'include' })
+    fetch('/api/auth/user', { credentials: 'include', cache: 'no-store' })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json() as Promise<{ user: AuthUser | null }>;
@@ -46,13 +46,11 @@ export function useAuth(): AuthState {
   }, []);
 
   const login = useCallback(() => {
-    const base = getBasePath();
-    window.location.href = `/api/login?returnTo=${encodeURIComponent(base)}`;
+    window.location.href = `/api/login?returnTo=${encodeURIComponent(getReturnPath())}`;
   }, []);
 
   const logout = useCallback(() => {
-    const base = getBasePath();
-    window.location.href = `/api/logout?returnTo=${encodeURIComponent(base)}`;
+    window.location.href = `/api/logout?returnTo=${encodeURIComponent(getReturnPath())}`;
   }, []);
 
   return {

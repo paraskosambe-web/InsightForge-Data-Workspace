@@ -10,7 +10,8 @@
     "@workspace/api-client-react": "workspace:*"
   },
   "devDependencies": {
-    "@types/react": "catalog:"
+    "@types/react": "catalog:",
+    "react": "catalog:"
   },
   "peerDependencies": {
     "react": ">=18"
